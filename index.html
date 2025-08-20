@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <main class="wrap">
+        <h1>Pong</h1>
+
+        <section class="scoreboard">
+        <div class="score">
+            <span id="p1Score">0</span>
+            <span class="sep">:</span>
+            <span id="p2Score">0</span>
+          </div>
+
+          <div class="controls">
+            <button id="pauseBtn">Pause</button>
+            <button id="restartBtn">Restart</button>
+            <label class="mode">
+              <input type="checkbox" id="twoPlayer" />
+              2P Mode
+            </label>
+          </div>
+        </section>
+
+        <canvas id="game" width="800" height="500" aria-label="Pong game"></canvas>
+
+        <p class="help">
+            Controls — Player 1: <b>W/S</b> or <b>↑/↓</b> • Player 2 (2P mode): <b>O/L</b> •
+            <b>Space</b>: Pause • <b>R</b>: Restart
+          </p>
+
+    </main>
+    
+    <script src="main.js"></script>
+</body>
+</html>
