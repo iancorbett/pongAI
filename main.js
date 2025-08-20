@@ -22,3 +22,8 @@ let running = true;
 let twoPlayer = false;
 let p1Score = 0;
 let p2Score = 0;
+
+const keys = {
+    up: false, down: false,    
+    p2up: false, p2down: false 
+  };
