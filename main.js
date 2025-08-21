@@ -27,3 +27,23 @@ const keys = {
     up: false, down: false,    
     p2up: false, p2down: false 
   };
+
+  window.addEventListener("keydown", (e) => {
+    switch (e.code) {
+      case "ArrowUp": case "KeyW": keys.up = true; break;
+      case "ArrowDown": case "KeyS": keys.down = true; break;
+      case "KeyO": keys.p2up = true; break;
+      case "KeyL": keys.p2down = true; break;
+      case "Space": running = !running; break;
+      case "KeyR": restartGame(); break;
+    }
+  });
+
+  window.addEventListener("keyup", (e) => {
+    switch (e.code) {
+      case "ArrowUp": case "KeyW": keys.up = false; break;
+      case "ArrowDown": case "KeyS": keys.down = false; break;
+      case "KeyO": keys.p2up = false; break;
+      case "KeyL": keys.p2down = false; break;
+    }
+  });
