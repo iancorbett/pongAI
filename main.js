@@ -38,6 +38,31 @@ const keys = {
     p2up: false, p2down: false 
   };
 
+  function randDir(){ return Math.random() < 0.5 ? 1 : -1; }
+
+  function resetBall(towards = 1) {
+    state.ballX = W/2 - BALL_SIZE/2;
+    state.ballY = H/2 - BALL_SIZE/2;
+    state.ballVX = BALL_START_SPEED * towards;
+    state.ballVY = BALL_START_SPEED * (Math.random() * 0.5 - 0.25);
+  }
+  
+  function restartGame() {
+      p1Score = 0; p2Score = 0;
+      state.playerY = H/2 - PADDLE_H/2;
+      state.aiY = H/2 - PADDLE_H/2;
+      resetBall(randDir());
+      state.lastTime = 0;
+      running = true;
+      updateScoreUI();
+    }
+  
+  function updateScoreUI() {
+      p1ScoreEl.textContent = p1Score;
+      p2ScoreEl.textContent = p2Score;
+    }
+  
+
   window.addEventListener("keydown", (e) => {
     switch (e.code) {
       case "ArrowUp": case "KeyW": keys.up = true; break;
