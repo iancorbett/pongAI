@@ -23,6 +23,12 @@ let twoPlayer = false;
 let p1Score = 0;
 let p2Score = 0;
 
+let samples = [];          //array of collected training examples
+let collecting = true;     //still collecting more, will sto when set to false
+let useBrain = false;      //when false teacher controls paddle when true its neural network
+let trained = false;        //set true if trained and change certan UI components
+let net = null;             //start neural net as null
+
 const state = {
     playerY: H/2 - PADDLE_H/2,
     aiY: H/2 - PADDLE_H/2,
