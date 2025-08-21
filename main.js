@@ -94,6 +94,20 @@ const keys = {
       case "KeyL": keys.p2down = true; break;
       case "Space": running = !running; break;
       case "KeyR": restartGame(); break;
+        //ai keys
+      case "KeyT": trainNow(); break; //trains neeural network using collected samples
+      case "KeyB":
+        if (!twoPlayer) { //if not in 2 player, then ai wil be playing
+          useBrain = !useBrain; // turn brain on and off with B
+          console.log("[pong] Mode:", useBrain ? "Brain" : "Teacher"); //log brain if brain is being used else log teacher
+        }
+        break;
+        case "KeyC":
+            if (!twoPlayer) { //onlyworks in one player
+              collecting = !collecting; //toggle if training samles are being collected
+              console.log("[pong] Collecting:", collecting ? "ON" : "OFF");
+            }
+            break;
     }
   });
 
