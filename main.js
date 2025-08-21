@@ -162,6 +162,20 @@ function update(dt) {
     if (keys.down) v1 += 1;
     //keep player 1 from going off screen
     state.playerY = clamp(state.playerY + v1 * PLAYER_SPEED * dt, 0, H - PADDLE_H);
+
+      // P2 movement if in 2p mode
+  let v2 = 0; // start at standstill
+  if (twoPlayer) {
+    if (keys.p2up) v2 -= 1;
+    if (keys.p2down) v2 += 1;
+  } else {
+    if (useBrain && net && trained) {
+      v2 = brainMove(); //brain controls paddle
+    } else {
+      v2 = teacherMove();
+      if (collecting) recordSample(v2); // collecting data to train neural net
+    }
+}
 }
 
 
