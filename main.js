@@ -176,6 +176,18 @@ function update(dt) {
       if (collecting) recordSample(v2); // collecting data to train neural net
     }
 }
+    state.aiY = clamp(state.aiY + v2 * AI_SPEED * dt, 0, H - PADDLE_H); //keep ai paddle on screen
+
+    state.ballX += state.ballVX * dt; //increment state depending on speed and time elapsed
+    state.ballY += state.ballVY * dt; //increment state depending on speed and time elapsed
+
+    if (state.ballY <= 0) { //hits upper boundary of canvas
+        state.ballY = 0; 
+        state.ballVY = Math.abs(state.ballVY); //change direction of velocity
+      } else if (state.ballY + BALL_SIZE >= H) { //hits lower boundary of canvas
+        state.ballY = H - BALL_SIZE;
+        state.ballVY = -Math.abs(state.ballVY); //change direction of velocity
+      }
 }
 
 
@@ -197,8 +209,32 @@ function update(dt) {
     ctx.fillText("Paused — Space to Resume", W/2, H/2);
     ctx.font = "16px ui-sans-serif, system-ui";
     ctx.fillText("R = Restart", W/2, H/2 + 28);
-  }
 
+    //left paddle
+    if (
+        state.ballX <= PLAYER_X + PADDLE_W &&
+        state.ballX + BALL_SIZE >= PLAYER_X &&
+        state.ballY + BALL_SIZE >= state.playerY &&
+        state.ballY <= state.playerY + PADDLE_H
+      ) {
+        state.ballX = PLAYER_X + PADDLE_W; 
+        state.ballVX = Math.abs(state.ballVX) * BALL_SPEED_GROWTH;
+        const rel = collisionRel(state.ballY, state.playerY);
+        state.ballVY = Math.abs(state.ballVX) * 0.45 * rel;
+      }
+  }
+        //right paddle
+  if (
+    state.ballX + BALL_SIZE >= AI_X &&
+    state.ballX <= AI_X + PADDLE_W &&
+    state.ballY + BALL_SIZE >= state.aiY &&
+    state.ballY <= state.aiY + PADDLE_H
+  ) {
+    state.ballX = AI_X - BALL_SIZE; 
+    state.ballVX = -Math.abs(state.ballVX) * BALL_SPEED_GROWTH;
+    const rel = collisionRel(state.ballY, state.aiY);
+    state.ballVY = Math.abs(state.ballVX) * 0.45 * rel;
+  }
 
 
     //cant move paddle up or down off screen
