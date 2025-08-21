@@ -129,7 +129,17 @@ const keys = {
 
 pauseBtn.addEventListener("click", () => running = !running);
 restartBtn.addEventListener("click", restartGame);
-twoPlayerEl.addEventListener("change", (e) => twoPlayer = e.target.checked);
+twoPlayerEl.addEventListener("change", (e) => {
+    twoPlayer = e.target.checked;
+    if (twoPlayer) {
+        useBrain = false;
+        collecting = false;
+        console.log("[pong] 2P mode ON — brain OFF, collecting OFF");
+      } else {
+        collecting = true;
+        console.log("[pong] 2P mode OFF — teacher/brain active, collecting ON");
+      }
+});
 
 
 
