@@ -141,6 +141,18 @@ twoPlayerEl.addEventListener("change", (e) => {
       }
 });
 
+function tick(ts) {
+    if (!state.lastTime) state.lastTime = ts; // sets to current ts if starting
+    const dt = Math.min((ts - state.lastTime) / 1000, 0.033); // /1000 to convert to seconds and 0.033 caps the time step
+    state.lastTime = ts; //update state with new most recent lastTime
+
+    if (running) {
+        update(dt);
+    }
+    draw();
+
+    requestAnimationFrame(tick);
+}
 
 
     // paddles are lighter for visibility
@@ -163,7 +175,7 @@ twoPlayerEl.addEventListener("change", (e) => {
     ctx.fillText("R = Restart", W/2, H/2 + 28);
   }
 
-}
+
 
     //cant move paddle up or down off screen
     function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
