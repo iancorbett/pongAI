@@ -29,7 +29,22 @@ let useBrain = false;      //when false teacher controls paddle when true its ne
 let trained = false;        //set true if trained and change certan UI components
 let net = null;             //start neural net as null
 
-const MAX_FOR_NORM = 900;
+const MAX_FOR_NORM = 900; //max velocity so that brainjs can deal with values consistently between 0 and 1
+
+let brainReady = null; //set initial state of brainReady to null
+function loadBrain() {
+  if (window.brain) return Promise.resolve(window.brain); //starts as false but then returns a promise
+  if (brainReady) return brainReady; //starts as false but we return a promise
+  brainReady = new Promise((resolve, reject) => {
+    const s = document.createElement("script"); //create a script tag element to import link
+    s.src = "https://unpkg.com/brain.js@1.6.1/dist/brain-browser.min.js"; //CDN URL to a file inside of the brain.js package
+    s.onload = () => resolve(window.brain);
+    s.onerror = () => reject(new Error("Failed to load Brain.js"));
+    document.head.appendChild(s); //add script tag to head
+  });
+  return brainReady;
+}
+
 
 const state = {
     playerY: H/2 - PADDLE_H/2,
