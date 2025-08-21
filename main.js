@@ -154,6 +154,16 @@ function tick(ts) {
     requestAnimationFrame(tick);
 }
 
+function update(dt) {
+    // P1 movement
+    let v1 = 0; // start at standstill
+    //origin on canvas is top left, so thats why up is negative 
+    if (keys.up) v1 -= 1;
+    if (keys.down) v1 += 1;
+    //keep player 1 from going off screen
+    state.playerY = clamp(state.playerY + v1 * PLAYER_SPEED * dt, 0, H - PADDLE_H);
+}
+
 
     // paddles are lighter for visibility
     ctx.fillStyle = "#e2e8f0";
