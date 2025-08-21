@@ -284,6 +284,24 @@ function update(dt) {
         return sign(targetY - aiCenter, 6); // -1 / 0 / 1
       }
       
+      function recordSample(dir) {
+        // only collect when ball is moving toward AI
+        if (state.ballVX <= 0) return;
+      
+        const input = {
+          bx: state.ballX / W, //ball position as a percentage of the canvas
+          by: state.ballY / H, //ball position as a percentage of the canvas
+          bvx: (state.ballVX / MAX_FOR_NORM + 1) / 2, //ball velocity scaled to 0..1
+          bvy: (state.ballVY / MAX_FOR_NORM + 1) / 2, //ball velocity scaled to 0..1
+          ay: state.aiY / H
+        };
+
+        //up if dir is negative because of how canvas coordinates work (origin in top left)
+        const output = dir < 0 ? { up: 1 } : dir > 0 ? { down: 1 } : { stay: 1 };
+        samples.push({ input, output });
+        if (samples.length > 8000) samples.shift(); // When you exceed 8000 samples, drop the oldest one
+      }
+      
 
 
 
