@@ -29,6 +29,8 @@ let useBrain = false;      //when false teacher controls paddle when true its ne
 let trained = false;        //set true if trained and change certan UI components
 let net = null;             //start neural net as null
 
+const MAX_FOR_NORM = 900;
+
 const state = {
     playerY: H/2 - PADDLE_H/2,
     aiY: H/2 - PADDLE_H/2,
