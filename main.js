@@ -234,6 +234,17 @@ function update(dt) {
     state.ballVX = -Math.abs(state.ballVX) * BALL_SPEED_GROWTH;
     const rel = collisionRel(state.ballY, state.aiY);
     state.ballVY = Math.abs(state.ballVX) * 0.45 * rel;
+
+    //detect scoring
+    if (state.ballX + BALL_SIZE < 0) {
+        p2Score += 1;
+        updateScoreUI();
+        resetBall(1);
+      } else if (state.ballX > W) {
+        p1Score += 1;
+        updateScoreUI();
+        resetBall(-1);
+      }
   }
 
 
