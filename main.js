@@ -275,8 +275,17 @@ function update(dt) {
         ctx.font = "16px ui-sans-serif, system-ui";
         ctx.fillText("R = Restart", W/2, H/2 + 28);
       }
-    
-  }
+    }
+
+    function teacherMove() {
+        // follow ball when coming toward AI; otherwise drift to center
+        const aiCenter = state.aiY + PADDLE_H/2; //center of paddle
+        const targetY = state.ballVX > 0 ? state.ballY + BALL_SIZE/2 : H/2;
+        return sign(targetY - aiCenter, 6); // -1 / 0 / 1
+      }
+      
+
+
 
 
     //cant move paddle up or down off screen
