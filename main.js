@@ -247,6 +247,37 @@ function update(dt) {
       }
   }
 
+  function collisionRel(ballTop, padTop) {
+    const ballCenterY = ballTop + BALL_SIZE/2;
+    return (ballCenterY - (padTop + PADDLE_H/2)) / (PADDLE_H/2); // -1..1
+  }
+
+  function draw() {
+         // black background that fills entire canvas
+         ctx.fillStyle = "#0b1220";
+         ctx.fillRect(0, 0, W, H);
+
+        // paddles are lighter for visibility
+        ctx.fillStyle = "#e2e8f0";
+        ctx.fillRect(PLAYER_X, state.playerY, PADDLE_W, PADDLE_H);
+        ctx.fillRect(AI_X, state.aiY, PADDLE_W, PADDLE_H);
+
+            // ball is same color as paddles
+    ctx.fillRect(state.ballX, state.ballY, BALL_SIZE, BALL_SIZE);
+    
+    if (!running) {
+        ctx.fillStyle = "rgba(15,23,42,0.5)";
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = "#f1f5f9";
+        ctx.font = "bold 28px ui-sans-serif, system-ui";
+        ctx.textAlign = "center";
+        ctx.fillText("Paused — Space to Resume", W/2, H/2);
+        ctx.font = "16px ui-sans-serif, system-ui";
+        ctx.fillText("R = Restart", W/2, H/2 + 28);
+      }
+    
+  }
+
 
     //cant move paddle up or down off screen
     function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
