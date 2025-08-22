@@ -188,8 +188,44 @@ function update(dt) {
         state.ballY = H - BALL_SIZE;
         state.ballVY = -Math.abs(state.ballVY); //change direction of velocity
       }
-}
 
+          //left paddle
+    if (
+        state.ballX <= PLAYER_X + PADDLE_W &&
+        state.ballX + BALL_SIZE >= PLAYER_X &&
+        state.ballY + BALL_SIZE >= state.playerY &&
+        state.ballY <= state.playerY + PADDLE_H
+      ) {
+        state.ballX = PLAYER_X + PADDLE_W; 
+        state.ballVX = Math.abs(state.ballVX) * BALL_SPEED_GROWTH;
+        const rel = collisionRel(state.ballY, state.playerY);
+        state.ballVY = Math.abs(state.ballVX) * 0.45 * rel;
+      }
+
+              //right paddle
+  if (
+    state.ballX + BALL_SIZE >= AI_X &&
+    state.ballX <= AI_X + PADDLE_W &&
+    state.ballY + BALL_SIZE >= state.aiY &&
+    state.ballY <= state.aiY + PADDLE_H
+  ) {
+    state.ballX = AI_X - BALL_SIZE; 
+    state.ballVX = -Math.abs(state.ballVX) * BALL_SPEED_GROWTH;
+    const rel = collisionRel(state.ballY, state.aiY);
+    state.ballVY = Math.abs(state.ballVX) * 0.45 * rel;
+  }
+
+      //detect scoring
+      if (state.ballX + BALL_SIZE < 0) {
+        p2Score += 1;
+        updateScoreUI();
+        resetBall(1);
+      } else if (state.ballX > W) {
+        p1Score += 1;
+        updateScoreUI();
+        resetBall(-1);
+      }
+  }
 
     // paddles are lighter for visibility
     ctx.fillStyle = "#e2e8f0";
@@ -210,42 +246,10 @@ function update(dt) {
     ctx.font = "16px ui-sans-serif, system-ui";
     ctx.fillText("R = Restart", W/2, H/2 + 28);
 
-    //left paddle
-    if (
-        state.ballX <= PLAYER_X + PADDLE_W &&
-        state.ballX + BALL_SIZE >= PLAYER_X &&
-        state.ballY + BALL_SIZE >= state.playerY &&
-        state.ballY <= state.playerY + PADDLE_H
-      ) {
-        state.ballX = PLAYER_X + PADDLE_W; 
-        state.ballVX = Math.abs(state.ballVX) * BALL_SPEED_GROWTH;
-        const rel = collisionRel(state.ballY, state.playerY);
-        state.ballVY = Math.abs(state.ballVX) * 0.45 * rel;
-      }
-  }
-        //right paddle
-  if (
-    state.ballX + BALL_SIZE >= AI_X &&
-    state.ballX <= AI_X + PADDLE_W &&
-    state.ballY + BALL_SIZE >= state.aiY &&
-    state.ballY <= state.aiY + PADDLE_H
-  ) {
-    state.ballX = AI_X - BALL_SIZE; 
-    state.ballVX = -Math.abs(state.ballVX) * BALL_SPEED_GROWTH;
-    const rel = collisionRel(state.ballY, state.aiY);
-    state.ballVY = Math.abs(state.ballVX) * 0.45 * rel;
 
-    //detect scoring
-    if (state.ballX + BALL_SIZE < 0) {
-        p2Score += 1;
-        updateScoreUI();
-        resetBall(1);
-      } else if (state.ballX > W) {
-        p1Score += 1;
-        updateScoreUI();
-        resetBall(-1);
-      }
   }
+
+
 
   function collisionRel(ballTop, padTop) {
     const ballCenterY = ballTop + BALL_SIZE/2;
