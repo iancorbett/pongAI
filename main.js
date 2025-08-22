@@ -320,10 +320,39 @@ function update(dt) {
         return best === "up" ? -1 : best === "down" ? 1 : 0;
       }
 
-
+      async function trainNow() {
+        if (twoPlayer) {
+          console.log("Turn off 2P to train the AI.");
+          return;
+        }
+        if (samples.length < 120) {
+          console.log("Collect 120+ samples first (let teacher play).");
+          return;
+        }
+        console.log("Loading Brain.js…");
+        try {
+          await loadBrain();
+        } catch (e) {
+          console.error(e);
+          return;
+        }
+        console.log("Training… ");
+        const data = samples.map(s => ({ input: s.input, output: s.output }));
+        net = new window.brain.NeuralNetwork({ hiddenLayers: [8, 6] }); //8 layers 6 neurons
+        net.train(data, {
+          iterations: 100,
+          learningRate: 0.01,
+          errorThresh: 0.005,
+          log: (it, err) => (it % 10 === 0) && console.log(`[pong] iter ${it} • err ${err.toFixed(4)}`)
+        });
+        trained = true;
+        useBrain = true;
+        console.log("[pong] Trained ✓ — Brain ON");
+      }
 
     //cant move paddle up or down off screen
     function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+    function sign(x, dead = 0.0001){ return x > dead ? 1 : x < -dead ? -1 : 0; }
 
     //start game
     updateScoreUI();
