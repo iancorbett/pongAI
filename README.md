@@ -3,13 +3,7 @@
 An addition to my last game of Pong, but this time with a learning bot. The right paddle starts as a simple “teacher” AI. While it plays, the game collects training samples. Press **T** to train a small Brain.js network; then the Brain can drive the paddle.
 
 ---
-
-## Project Layout
-
-/project-root
-├── index.html
-├── style.css
-└── main.js
+## Instructions
 
 Open `index.html` in a modern browser. No build tools required.
 
