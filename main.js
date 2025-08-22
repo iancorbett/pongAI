@@ -298,11 +298,27 @@ function update(dt) {
 
         //up if dir is negative because of how canvas coordinates work (origin in top left)
         const output = dir < 0 ? { up: 1 } : dir > 0 ? { down: 1 } : { stay: 1 };
-        samples.push({ input, output });
+        samples.push({ input, output }); // push data to array for training
         if (samples.length > 8000) samples.shift(); // When you exceed 8000 samples, drop the oldest one
       }
       
-
+      function brainMove() {
+        if (!net) return 0;  //cant move without training
+        const input = {
+          bx: state.ballX / W,
+          by: state.ballY / H,
+          bvx: (state.ballVX / MAX_FOR_NORM + 1) / 2,
+          bvy: (state.ballVY / MAX_FOR_NORM + 1) / 2,
+          ay: state.aiY / H
+        };
+        const out = net.run(input); // {up, stay, down} ~ 0..1
+        let best = "stay", bestVal = -Infinity; //set initial best action to stay and best val to -infinity so any number can beat it
+        for (const k of ["up","stay","down"]) { //loop through all three possibilities
+          const v = out[k] ?? 0; //model gives a score for each action 
+          if (v > bestVal) { bestVal = v; best = k; } //sets it to best if its higher 
+        }
+        return best === "up" ? -1 : best === "down" ? 1 : 0;
+      }
 
 
 
